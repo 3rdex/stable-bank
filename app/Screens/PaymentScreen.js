@@ -42,7 +42,7 @@ export default class PaymentScreen extends React.Component {
             </CardItem>
           </Card>
         </Content>
-        <BlurView tint="dark" intensity={80}
+        <BlurView tint="dark" intensity={40}
                   style={{
                     flex: 1,
                     position: 'absolute',
