@@ -65,10 +65,9 @@ create_accounts.sh
 
 # * Replace the script with different form of data that you would pushed into the blockchain when you start your own project
 cleos push action eosio.token create '[ "eosio", "1000000000.0000 SYS"]' -p eosio.token@active
-cleos push action eosio.token issue '[ "eventchainac", "1000.0000 SYS", "init" ]' -p eosio@active
+cleos push action eosio.token issue '[ "stablebankac", "1000.0000 SYS", "init" ]' -p eosio@active
 cleos push action eosio.token issue '[ "useraaaaaaaa", "1000.0000 SYS", "init" ]' -p eosio@active
 cleos push action eosio.token issue '[ "useraaaaaaab", "1000.0000 SYS", "init" ]' -p eosio@active
-cleos push action eosio.token issue '[ "useraaaaaaac", "1000.0000 SYS", "init" ]' -p eosio@active
 
 echo "=== end of setup blockchain accounts and smart contract ==="
 # create a file to indicate the blockchain has been initialized

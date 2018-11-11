@@ -56,6 +56,7 @@ CONTRACT stablebank : public eosio::contract {
         indexed_by<name("byuser"), const_mem_fun<prepaystruct, uint64_t,
                                                  &prepaystruct::index_by_user>>>
         prepare_pay_table;
+
     typedef eosio::multi_index<
         name("paystruct"), paystruct,
         indexed_by<name("byfrom"), const_mem_fun<paystruct, uint64_t,
@@ -104,7 +105,8 @@ CONTRACT stablebank : public eosio::contract {
       bool pay_prepared = itr != index.end();
       eosio_assert(pay_prepared, "payment not init");
       auto pay_time = now();
-      eosio_assert(pay_time - itr->timestamp > 2 * 60 * 1000, "payment expired");
+      auto elapse_seconds = pay_time - itr->timestamp;
+      eosio_assert(elapse_seconds < 2 * 60, "payment expired");
       pay_table pays = pay_table(_self, from.value);
       pays.emplace(_self, [&](auto &item) {
         item.prim_key = pays.available_primary_key();
