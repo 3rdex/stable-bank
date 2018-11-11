@@ -1,7 +1,12 @@
 import React from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import { Button } from 'native-base';
 
 export default class DetailScreen extends React.Component {
+  static navigationOptions = {
+    title: 'Detail Screen',
+  };
+
   render() {
     return (
       <View style={styles}>

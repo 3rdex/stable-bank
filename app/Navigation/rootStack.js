@@ -2,7 +2,7 @@ import { createStackNavigator } from 'react-navigation';
 import HomeScreen from '../Screens/HomeScreen';
 import DetailScreen from '../Screens/DetailScreen';
 
-export const RootStack =  createStackNavigator({
+export const RootStack = createStackNavigator({
   Home: {
     screen: HomeScreen,
   },
@@ -11,4 +11,5 @@ export const RootStack =  createStackNavigator({
   },
 }, {
   initialRouteName: 'Home',
+  headerMode: 'float',
 });
