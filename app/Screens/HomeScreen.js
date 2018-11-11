@@ -14,11 +14,22 @@ import {
   Thumbnail,
   Icon,
 } from 'native-base';
+import {Customer} from "../Services/Customer";
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     title: 'Home Screen',
   };
+
+  state = {
+    balance: 'loading'
+  };
+  async componentDidMount() {
+    const balance = await Customer.getBalance();
+    this.setState({
+      balance: `$ ${balance.toFixed(2)}`
+    })
+  }
 
   renderAccount() {
     return (
@@ -30,19 +41,18 @@ export default class HomeScreen extends React.Component {
           <Body>
           <View style={{ height: 100, alignItems: 'center', justifyContent: 'center' }}>
             <Text style={{ fontSize: 36, fontWeight: 'bold' }}>
-              Balance: $35000
+              Balance: {this.state.balance}
             </Text>
           </View>
           </Body>
         </CardItem>
         <CardItem>
           <View style={{ flex: 1, flexDirection: "row", justifyContent: 'space-between', }}>
-            <Button success onPress={() => {
+            <Button success onPress={async () => {
+              await Customer.prepare();
               this.props.navigation.navigate('Payment')
-            }}><Text> Send </Text></Button>
-            <Button warning onPress={() => {
-              this.props.navigation.navigate('Payment')
-            }}><Text> Receive </Text></Button>
+            }}><Text> Pay </Text></Button>
+            <Button warning onPress={() => null}><Text> Receive </Text></Button>
           </View>
         </CardItem>
       </Card>
@@ -110,14 +120,6 @@ export default class HomeScreen extends React.Component {
           justifyContent: 'space-between',
           padding: 15
         }}>
-          <Button iconLeft onPress={() => this._deckSwiper._root.swipeLeft()}>
-            {/*<Icon name="arrow-back"/>*/}
-            <Text>Swipe Left</Text>
-          </Button>
-          <Button iconRight onPress={() => this._deckSwiper._root.swipeRight()}>
-            {/*<Icon name="arrow-forward"/>*/}
-            <Text>Swipe Right</Text>
-          </Button>
         </View>
       </View>
     )

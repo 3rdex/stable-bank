@@ -1,3 +1,7 @@
+import {initAPI} from "./initAPI";
+import {charge} from "./actions";
+import {deposit_for} from "./helper";
+
 const CUSTOMER = 'useraaaaaaaa';
 const SHOPUSER = 'useraaaaaaab';
 

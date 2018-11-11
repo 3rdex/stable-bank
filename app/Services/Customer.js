@@ -1,3 +1,7 @@
+import {deposit, pay, prepare} from "./actions";
+import {deposit_for} from "./helper";
+import {initAPI} from "./initAPI";
+
 const CUSTOMER = 'useraaaaaaaa';
 const SHOPUSER = 'useraaaaaaab';
 
