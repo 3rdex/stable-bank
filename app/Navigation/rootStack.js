@@ -1,15 +1,15 @@
 import { createStackNavigator } from 'react-navigation';
 import HomeScreen from '../Screens/HomeScreen';
-import DetailScreen from '../Screens/DetailScreen';
+import PaymentScreen from '../Screens/PaymentScreen';
 
 export const RootStack = createStackNavigator({
   Home: {
     screen: HomeScreen,
   },
-  Detail: {
-    screen: DetailScreen,
+  Payment: {
+    screen: PaymentScreen,
   },
 }, {
-  initialRouteName: 'Home',
+  initialRouteName: 'Payment',
   headerMode: 'float',
 });

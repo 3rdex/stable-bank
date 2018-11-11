@@ -2,9 +2,9 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button } from 'native-base';
 
-export default class DetailScreen extends React.Component {
+export default class PaymentScreen extends React.Component {
   static navigationOptions = {
-    title: 'Detail Screen',
+    title: 'Pay',
   };
 
   render() {

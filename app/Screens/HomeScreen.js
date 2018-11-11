@@ -38,10 +38,10 @@ export default class HomeScreen extends React.Component {
         <CardItem>
           <View style={{ flex: 1, flexDirection: "row", justifyContent: 'space-between', }}>
             <Button success onPress={() => {
-              this.props.navigation.navigate('Detail')
+              this.props.navigation.navigate('Payment')
             }}><Text> Send </Text></Button>
             <Button warning onPress={() => {
-              this.props.navigation.navigate('Detail')
+              this.props.navigation.navigate('Payment')
             }}><Text> Receive </Text></Button>
           </View>
         </CardItem>
