@@ -1,6 +1,6 @@
 export function deposit(from, user, quantity) {
     return {
-        account: 'eosio.token',
+        account: 'stablecoinac',
         name: 'transfer',
         authorization: [{actor: from, permission: 'active'}],
         data: {from: from, to: 'stablebankac', quantity: quantity, memo: user},

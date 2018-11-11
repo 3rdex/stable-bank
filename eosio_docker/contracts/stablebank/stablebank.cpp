@@ -3,6 +3,10 @@
 
 using namespace eosio;
 using std::string;
+
+const auto STABLE_CONTRACT = "stablecoinac";
+const auto STABLE_COIN_SYMBOL = symbol("STB", 4);
+
 CONTRACT stablebank : public eosio::contract {
   private:
     TABLE depostruct {
@@ -198,8 +202,10 @@ CONTRACT stablebank : public eosio::contract {
       }
 
       eosio_assert(transfer_data.quantity.is_valid(), "Invalid token transfer");
+      eosio_assert(transfer_data.quantity.symbol == STABLE_COIN_SYMBOL, "Invalid token");
       eosio_assert(transfer_data.quantity.amount > 0,
                    "Quantity must be positive");
+
 
       auto deposit = transfer_data.quantity;
       auto user = name(transfer_data.memo);
@@ -227,7 +233,7 @@ extern "C" {
     if (code == receiver) {
       switch (action) { EOSIO_DISPATCH_HELPER(stablebank, (pay)(charge)(preparepay)) }
     } else if (action == name("transfer").value &&
-              code == name("eosio.token").value) {
+               code == name(STABLE_CONTRACT).value) {
       execute_action(name(receiver), name(code), &stablebank::on_transfer);
     }
   }

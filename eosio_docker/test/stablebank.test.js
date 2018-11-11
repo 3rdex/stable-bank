@@ -13,7 +13,7 @@ const DEFAULT_TRANS = {blocksBehind: 3, expireSeconds: 30};
 test('deposit', async () => {
     const balanceBefore = await deposit_for({user: CUSTOMER});
 
-    await customer.transact({actions: [deposit(CUSTOMER, CUSTOMER, '10.0000 SYS')]}, DEFAULT_TRANS);
+    await customer.transact({actions: [deposit(CUSTOMER, CUSTOMER, '10.0000 STB')]}, DEFAULT_TRANS);
 
     const balance = await deposit_for({user: CUSTOMER});
     const diff = balance - balanceBefore;
@@ -23,7 +23,7 @@ test('deposit', async () => {
 test('shop deposit', async () => {
     const balanceBefore = await deposit_for({user: SHOPUSER});
 
-    await shop.transact({actions: [deposit(SHOPUSER, SHOPUSER, '10.0000 SYS')]}, DEFAULT_TRANS);
+    await shop.transact({actions: [deposit(SHOPUSER, SHOPUSER, '10.0000 STB')]}, DEFAULT_TRANS);
 
     const balance = await deposit_for({user: SHOPUSER});
     const diff = balance - balanceBefore;
@@ -38,12 +38,12 @@ test('prepare', async () => {
 });
 
 test('charge', async () => {
-    await shop.transact({actions: [charge(CUSTOMER, SHOPUSER, '1.0000 SYS')]}, DEFAULT_TRANS);
+    await shop.transact({actions: [charge(CUSTOMER, SHOPUSER, '1.0000 STB')]}, DEFAULT_TRANS);
 
     const paymentList = await payment({user: CUSTOMER});
     expect(paymentList.length).toBe(1);
     const [payment_record] = paymentList;
-    expect(payment_record.amount).toBe('1.0000 SYS');
+    expect(payment_record.amount).toBe('1.0000 STB');
 });
 
 test('pay', async () => {
@@ -56,7 +56,7 @@ test('pay', async () => {
     expect(paymentList.length).toBe(0);
     const hold_list = await holds({user: CUSTOMER});
     const hold_record = hold_list.reverse()[0];
-    expect(hold_record.amount).toBe('0.0990 SYS');
+    expect(hold_record.amount).toBe('0.0990 STB');
 
     const shopBalance = await deposit_for({user: SHOPUSER});
     const customerBalance = await deposit_for({user: CUSTOMER});
