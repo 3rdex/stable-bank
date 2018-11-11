@@ -1,6 +1,6 @@
 import {initAPI} from "./initAPI";
 import {charge} from "./actions";
-import {deposit_for} from "./helper";
+import {deposit_for, holds} from "./helper";
 
 const CUSTOMER = 'useraaaaaaaa';
 const SHOPUSER = 'useraaaaaaab';
@@ -16,5 +16,13 @@ export class Shop {
     static async getBalance() {
         const balance = await deposit_for({ user: SHOPUSER });
         return balance;
+    }
+    static async getPending() {
+        const holdsList = await holds();
+        return holdsList.reduce((r,x) => {
+            const amount = Number(x.amount.split(' ')[0]);
+            r+=amount;
+            return r;
+        }, 0);
     }
 }

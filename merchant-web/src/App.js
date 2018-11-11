@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import logo from './logo.svg';
 import './App.css';
 
@@ -19,13 +19,14 @@ import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 
 
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import {Shop} from "./Services/Shop";
 
 const styles = theme => ({
   root: {
@@ -62,15 +63,16 @@ const styles = theme => ({
   pos: {
     marginBottom: 12,
   },
-  highlight:{
+  highlight: {
     backgroundColor: '#000000'
   }
 });
 
 let id = 0;
+
 function createData(name, calories, fat, carbs, protein, z, highlight) {
   id += 1;
-  return { id, name, calories, fat, carbs, protein, z, highlight };
+  return {id, name, calories, fat, carbs, protein, z, highlight};
 }
 
 const rows = [
@@ -82,18 +84,33 @@ const rows = [
   createData('1002', '11/11 19:18', 'Purchase', 'Albert Pang', '$ 0.36', '$ 3.60'),
 ];
 
+const BALANCE_FIX = 3521.50;
+const PENDING_FIX = 201.32;
+
 class App extends Component {
 
   componentWillMount() {
     this.setState({rows, availableBalance: '3521.50', pendingBalance: '201.32'});
   }
 
-  refresh() {
+  async componentDidMount() {
+    const balance = await Shop.getBalance();
+    const pending = await Shop.getPending();
+    this.setState({
+      availableBalance: (BALANCE_FIX + balance).toFixed(2),
+      pendingBalance: (PENDING_FIX + pending).toFixed(2),
+    });
+
+  }
+
+  async refresh() {
+    const balance = await Shop.getBalance();
+    const pending = await Shop.getPending();
     rows.unshift(createData('1007', '11/11 13:47', 'Purchase', 'Stable Gump', '$ 9.00', '$ 0.99', true));
     this.setState({
       rows,
-      availableBalance: '3530.50',
-      pendingBalance: '202.31'
+      availableBalance: BALANCE_FIX + balance,
+      pendingBalance: PENDING_FIX + pending,
     });
     console.log(rows);
   }
@@ -110,13 +127,13 @@ class App extends Component {
             <AppBar position="static">
               <Toolbar>
                 <IconButton className={this.props.classes.menuButton} color="inherit" aria-label="Menu">
-                  <MenuIcon />
+                  <MenuIcon/>
                 </IconButton>
                 <Typography variant="h6" color="inherit" className={this.props.classes.grow}>
                   Stable Bank
                 </Typography>
-                <Button color="inherit" onClick={()=>this.refresh()}>
-                  <RefreshIcon />
+                <Button color="inherit" onClick={() => this.refresh()}>
+                  <RefreshIcon/>
                 </Button>
               </Toolbar>
             </AppBar>
@@ -129,21 +146,21 @@ class App extends Component {
                     <CardContent>
                       <Typography className={this.props.classes.title} color="textSecondary" gutterBottom>
                         My Balance
-        </Typography>
+                      </Typography>
                       <Typography variant="h5" component="h2">
                         $ {this.state.availableBalance}
-        </Typography>
+                      </Typography>
                       <Typography className={this.props.classes.pos} color="textSecondary">
                         Available Now
-        </Typography>
+                      </Typography>
                     </CardContent>
                     <CardActions>
                       <Button size="small" color="primary">
                         Send
-        </Button>
+                      </Button>
                       <Button size="small" color="primary">
                         Withdraw
-        </Button>
+                      </Button>
                     </CardActions>
                   </Card>
 
@@ -155,18 +172,18 @@ class App extends Component {
                     <CardContent>
                       <Typography className={this.props.classes.title} color="textSecondary" gutterBottom>
                         Pending Balance
-        </Typography>
+                      </Typography>
                       <Typography variant="h5" component="h2">
                         $ {this.state.pendingBalance}
-        </Typography>
+                      </Typography>
                       <Typography className={this.props.classes.pos} color="textSecondary">
                         Next Settlement: 11/12 12:32
-        </Typography>
+                      </Typography>
                     </CardContent>
                     <CardActions>
                       <Button size="small" color="primary">
                         Refund a Transaction
-        </Button>
+                      </Button>
                     </CardActions>
                   </Card>
 
@@ -190,7 +207,8 @@ class App extends Component {
                 <TableBody>
                   {this.state.rows.map(row => {
                     return (
-                      <TableRow key={row.id} classes={{selected: this.props.classes.highlight}} selected={row.highlight}>
+                      <TableRow key={row.id} classes={{selected: this.props.classes.highlight}}
+                                selected={row.highlight}>
                         <TableCell component="th" scope="row">
                           {row.name}
                         </TableCell>
