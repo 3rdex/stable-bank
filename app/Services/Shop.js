@@ -6,7 +6,7 @@ const DEFAULT_TRANS = { blocksBehind: 3, expireSeconds: 30 };
 
 export class Customer {
     static async charge() {
-        await shop.transact({ actions: [charge(CUSTOMER, SHOPUSER, '1.0000 STB')] }, DEFAULT_TRANS);
+        await shop.transact({ actions: [charge(CUSTOMER, SHOPUSER, '10.0000 STB')] }, DEFAULT_TRANS);
     }
 
     static async getBalance() {

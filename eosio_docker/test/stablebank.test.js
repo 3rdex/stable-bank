@@ -38,12 +38,12 @@ test('prepare', async () => {
 });
 
 test('charge', async () => {
-    await shop.transact({actions: [charge(CUSTOMER, SHOPUSER, '1.0000 STB')]}, DEFAULT_TRANS);
+    await shop.transact({actions: [charge(CUSTOMER, SHOPUSER, '10.0000 STB')]}, DEFAULT_TRANS);
 
     const paymentList = await payment({user: CUSTOMER});
     expect(paymentList.length).toBe(1);
     const [payment_record] = paymentList;
-    expect(payment_record.amount).toBe('1.0000 STB');
+    expect(payment_record.amount).toBe('10.0000 STB');
 });
 
 test('pay', async () => {
@@ -56,11 +56,11 @@ test('pay', async () => {
     expect(paymentList.length).toBe(0);
     const hold_list = await holds({user: CUSTOMER});
     const hold_record = hold_list.reverse()[0];
-    expect(hold_record.amount).toBe('0.0990 STB');
+    expect(hold_record.amount).toBe('0.9900 STB');
 
     const shopBalance = await deposit_for({user: SHOPUSER});
     const customerBalance = await deposit_for({user: CUSTOMER});
-    expect(shopBalance - shopBalanceBefore).toBeCloseTo(0.9);
-    expect(customerBalanceBefore - customerBalance).toBeCloseTo(1);
+    expect(shopBalance - shopBalanceBefore).toBeCloseTo(9);
+    expect(customerBalanceBefore - customerBalance).toBeCloseTo(10);
 
 }, 15000);
