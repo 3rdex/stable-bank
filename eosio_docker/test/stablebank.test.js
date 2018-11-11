@@ -12,9 +12,9 @@ const DEFAULT_TRANS = {blocksBehind: 3, expireSeconds: 30};
 
 test('deposit', async () => {
     const balanceBefore = await deposit_for({user: CUSTOMER});
-    await customer.transact({
-        actions: [deposit(CUSTOMER, CUSTOMER, '10.0000 SYS')]
-    }, DEFAULT_TRANS);
+
+    await customer.transact({actions: [deposit(CUSTOMER, CUSTOMER, '10.0000 SYS')]}, DEFAULT_TRANS);
+
     const balance = await deposit_for({user: CUSTOMER});
     const diff = balance - balanceBefore;
     expect(diff).toBeCloseTo(10);
@@ -22,28 +22,23 @@ test('deposit', async () => {
 
 test('shop deposit', async () => {
     const balanceBefore = await deposit_for({user: SHOPUSER});
-    await shop.transact({
-        actions: [deposit(SHOPUSER, SHOPUSER, '10.0000 SYS')]
-    }, DEFAULT_TRANS);
+
+    await shop.transact({actions: [deposit(SHOPUSER, SHOPUSER, '10.0000 SYS')]}, DEFAULT_TRANS);
+
     const balance = await deposit_for({user: SHOPUSER});
     const diff = balance - balanceBefore;
     expect(diff).toBeCloseTo(10);
 });
 
 test('prepare', async () => {
-    await customer.transact({
-        actions: [prepare(CUSTOMER)]
-    }, DEFAULT_TRANS);
+    await customer.transact({actions: [prepare(CUSTOMER)]}, DEFAULT_TRANS);
+
     const [prepare_record] = await prepares();
     expect(prepare_record.user).toBe(CUSTOMER);
 });
 
 test('charge', async () => {
-    await shop.transact({
-        actions: [charge(
-            CUSTOMER, SHOPUSER, '1.0000 SYS'
-        )]
-    }, DEFAULT_TRANS);
+    await shop.transact({actions: [charge(CUSTOMER, SHOPUSER, '1.0000 SYS')]}, DEFAULT_TRANS);
 
     const paymentList = await payment({user: CUSTOMER});
     expect(paymentList.length).toBe(1);
@@ -54,11 +49,8 @@ test('charge', async () => {
 test('pay', async () => {
     const shopBalanceBefore = await deposit_for({user: SHOPUSER});
     const customerBalanceBefore = await deposit_for({user: CUSTOMER});
-    await customer.transact({
-        actions: [pay(
-            CUSTOMER, SHOPUSER
-        )]
-    }, DEFAULT_TRANS);
+
+    await customer.transact({actions: [pay(CUSTOMER, SHOPUSER)]}, DEFAULT_TRANS);
 
     const paymentList = await payment({user: CUSTOMER});
     expect(paymentList.length).toBe(0);
