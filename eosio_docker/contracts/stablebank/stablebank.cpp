@@ -1,17 +1,10 @@
 #include <eosiolib/eosio.hpp>
+#include <eosiolib/asset.hpp>
 
 using namespace eosio;
-
+using std::string;
 CONTRACT stablebank : public eosio::contract {
   private:
-    bool isnewuser( name user ) {
-      // get notes by using secordary key
-      auto note_index = _notes.get_index<name("getbyuser")>();
-      auto note_iterator = note_index.find(user.value);
-
-      return note_iterator == note_index.end();
-    }
-
     TABLE depostruct {
       uint64_t      prim_key;  // primary key
       name          user;      // account name for the user
@@ -48,7 +41,7 @@ CONTRACT stablebank : public eosio::contract {
       // secondary key
       uint64_t index_by_from() const { return from.value; }
       uint64_t index_by_to() const { return to.value; }
-      uint64_t index_by_start() const { return prepare_time.value; }
+      uint64_t index_by_prepare() const { return prepare_time; }
     };
 
     // create a multi-index table and support secondary key
@@ -66,9 +59,9 @@ CONTRACT stablebank : public eosio::contract {
     typedef eosio::multi_index<
         name("paystruct"), paystruct,
         indexed_by<name("byfrom"), const_mem_fun<paystruct, uint64_t,
-                                                 &paystruct::index_by_from>>>,
+                                                 &paystruct::index_by_from>>,
         indexed_by<name("byto"),
-                   const_mem_fun<paystruct, uint64_t, &paystruct::index_by_to>>>
+                   const_mem_fun<paystruct, uint64_t, &paystruct::index_by_to>>
         ,
         indexed_by<
             name("byprepare"),
@@ -93,11 +86,11 @@ CONTRACT stablebank : public eosio::contract {
       if(itr == index.end()) {
         _prepare_pay.emplace(_self, [&](auto &item) {
           item.prim_key = _prepare_pay.available_primary_key();
-          item.user = user;
+          item.user = from;
           item.timestamp = now();
         });
       } else {
-        _prepare_pay.modify(itr, _self, [&](auto &item) { 
+        index.modify(itr, _self, [&](auto &item) { 
           item.timestamp = now(); 
         });
       }
@@ -106,43 +99,43 @@ CONTRACT stablebank : public eosio::contract {
     ACTION charge(name from, name shop, asset amount){
       require_auth(shop);
 
-      auto index = _prepare_pay.get_index<name("byfrom")>();
+      auto index = _prepare_pay.get_index<name("byuser")>();
       auto itr = index.find(from.value);
       bool pay_prepared = itr != index.end();
       eosio_assert(pay_prepared, "payment not init");
       auto pay_time = now();
       eosio_assert(pay_time - itr->timestamp > 2 * 60 * 1000, "payment expired");
-      pay_table pays = pay_table(_self, from);
-      pay_table.emplace(_self, [&](auto &item) {
-        item.prim_key = pay_table.available_primary_key();
+      pay_table pays = pay_table(_self, from.value);
+      pays.emplace(_self, [&](auto &item) {
+        item.prim_key = pays.available_primary_key();
         item.from = from;
         item.to = shop;
         item.amount = amount;
-        item.confirmed = false;
         item.prepare_time = itr->timestamp;
         item.timestamp = now();
       });
     }
     
-    ACTION pay(name from, user shop, asset amount){
+    ACTION pay(name from, name shop, asset amount){
       require_auth(from);
       auto prepare_index = _prepare_pay.get_index<name("byuser")>();
       auto prepare_itr = prepare_index.find(from.value);
       eosio_assert(prepare_itr != prepare_index.end(), "no matching prepare");
-      pay_table pays = pay_table(_self, from);
-      auto index = _prepare_pay.get_index<name("byprepare")>();
-      auto itr = index.find(prepare_itr.timestamp);
+      pay_table pays = pay_table(_self, from.value);
+      auto index = pays.get_index<name("byprepare")>();
+      auto itr = index.find(prepare_itr->timestamp);
       eosio_assert(itr != index.end(), "no matching charge");
       auto direct_amount = itr->amount * 0.9;
       auto hold_amount = itr->amount * 0.099;
       deduct_balance(from, itr->amount);
       add_balance(shop, direct_amount);
-      hold_balance(shop, hold_balance);
+      hold_balance(shop, hold_amount);
+      index.erase(itr);
     }
 
     void deduct_balance(name user, asset amount){
       auto index = _deposits.get_index<name("byuser")>();
-      auto &entry = index.get(event_name.value);
+      auto &entry = index.get(user.value);
       _deposits.modify(entry, _self, [&](auto &item) {
         item.deposit -= amount;
         item.timestamp = now();
@@ -150,7 +143,7 @@ CONTRACT stablebank : public eosio::contract {
     }
     void add_balance(name user, asset amount) {
       auto index = _deposits.get_index<name("byuser")>();
-      auto &entry = index.get(event_name.value);
+      auto &entry = index.get(user.value);
       _deposits.modify(entry, _self, [&](auto &item) {
         item.deposit += amount;
         item.timestamp = now();
@@ -178,9 +171,11 @@ CONTRACT stablebank : public eosio::contract {
                    "Quantity must be positive");
 
       auto deposit = transfer_data.quantity;
-      auto to_account = transfer_data.memo;
-
-      if (!is_deposit_exist(_deposits, user)) {
+      auto user = name(transfer_data.memo);
+      auto index = _deposits.get_index<name("byuser")>();
+      auto itr = index.find(user.value);
+      bool is_deposit_exist = itr != index.end();
+      if (!is_deposit_exist) {
         _deposits.emplace(_self, [&](auto &item) {
           item.prim_key = _deposits.available_primary_key();
           item.user = user;
@@ -188,9 +183,7 @@ CONTRACT stablebank : public eosio::contract {
           item.timestamp = now();
         });
       } else {
-        auto index = _deposits.get_index<name("byuser")>();
-        auto &entry = index.get(event_name.value);
-        _deposits.modify(entry, _self, [&](auto &item) {
+        index.modify(itr, _self, [&](auto &item) {
           item.deposit += deposit;
           item.timestamp = now();
         });
@@ -201,7 +194,7 @@ CONTRACT stablebank : public eosio::contract {
 extern "C" {
   void apply(uint64_t receiver, uint64_t code, uint64_t action) {
     if (code == receiver) {
-      switch (action) { EOSIO_DISPATCH_HELPER(stablebank, (pay)(refund)) }
+      switch (action) { EOSIO_DISPATCH_HELPER(stablebank, (pay)(charge)(preparepay)) }
     } else if (action == name("transfer").value &&
               code == name("eosio.token").value) {
       execute_action(name(receiver), name(code), &stablebank::on_transfer);
