@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
@@ -17,16 +17,17 @@ import CardContent from '@material-ui/core/CardContent';
 import Divider from '@material-ui/core/Divider';
 
 import Grid from '@material-ui/core/Grid';
+import AnimatedNumber from 'react-animated-number';
 
 
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import {Shop} from "./Services/Shop";
+import { Shop } from "./Services/Shop";
 
 const styles = theme => ({
   root: {
@@ -72,7 +73,7 @@ let id = 0;
 
 function createData(name, calories, fat, carbs, protein, z, highlight) {
   id += 1;
-  return {id, name, calories, fat, carbs, protein, z, highlight};
+  return { id, name, calories, fat, carbs, protein, z, highlight };
 }
 
 const rows = [
@@ -90,15 +91,15 @@ const PENDING_FIX = 201.32;
 class App extends Component {
 
   componentWillMount() {
-    this.setState({rows, availableBalance: '3521.50', pendingBalance: '201.32'});
+    this.setState({ rows, availableBalance: BALANCE_FIX, pendingBalance: PENDING_FIX });
   }
 
   async componentDidMount() {
     const balance = await Shop.getBalance();
     const pending = await Shop.getPending();
     this.setState({
-      availableBalance: (BALANCE_FIX + balance).toFixed(2),
-      pendingBalance: (PENDING_FIX + pending).toFixed(2),
+      availableBalance: (BALANCE_FIX + balance),
+      pendingBalance: (PENDING_FIX + pending),
     });
 
   }
@@ -141,15 +142,21 @@ class App extends Component {
             <Paper>
               <Grid container spacing={24}>
                 <Grid item xs={6}>
-
                   <Card className={this.props.classes.card}>
                     <CardContent>
                       <Typography className={this.props.classes.title} color="textSecondary" gutterBottom>
                         My Balance
                       </Typography>
-                      <Typography variant="h5" component="h2">
-                        $ {this.state.availableBalance}
-                      </Typography>
+                      <AnimatedNumber
+                        style={{
+                          transition: '0.8s ease-out',
+                          color: 'black',
+                          transitionProperty:
+                            'background-color, color'
+                        }}
+                        stepPrecision={0}
+                        value={this.state.availableBalance}
+                        formatValue={n => `$ ${n.toFixed(2)}`}/>
                       <Typography className={this.props.classes.pos} color="textSecondary">
                         Available Now
                       </Typography>
@@ -173,9 +180,16 @@ class App extends Component {
                       <Typography className={this.props.classes.title} color="textSecondary" gutterBottom>
                         Pending Balance
                       </Typography>
-                      <Typography variant="h5" component="h2">
-                        $ {this.state.pendingBalance}
-                      </Typography>
+                      <AnimatedNumber
+                        style={{
+                          transition: '0.8s ease-out',
+                          color: 'black',
+                          transitionProperty:
+                            'background-color, color'
+                        }}
+                        stepPrecision={0}
+                        value={this.state.pendingBalance}
+                        formatValue={n => `$ ${n.toFixed(2)}`}/>
                       <Typography className={this.props.classes.pos} color="textSecondary">
                         Next Settlement: 11/12 12:32
                       </Typography>
@@ -207,7 +221,7 @@ class App extends Component {
                 <TableBody>
                   {this.state.rows.map(row => {
                     return (
-                      <TableRow key={row.id} classes={{selected: this.props.classes.highlight}}
+                      <TableRow key={row.id} classes={{ selected: this.props.classes.highlight }}
                                 selected={row.highlight}>
                         <TableCell component="th" scope="row">
                           {row.name}
