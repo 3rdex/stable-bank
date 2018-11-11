@@ -45,7 +45,7 @@ export default class PaymentScreen extends React.Component {
     await Customer.pay();
     this.props.navigation.navigate('Receipt');
     this.setState({
-      spinning: true
+      spinning: false
     });
   }
 
