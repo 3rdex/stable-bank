@@ -15,6 +15,8 @@ import {
   Icon,
 } from 'native-base';
 import { BlurView } from 'expo';
+import {Shop} from "../Services/Shop";
+import {Customer} from "../Services/Customer";
 
 export default class PaymentScreen extends React.Component {
   static navigationOptions = {
@@ -28,9 +30,10 @@ export default class PaymentScreen extends React.Component {
     }
   }
 
-  toggleIsShowPayment() {
+  async toggleIsShowPayment() {
+    await Shop.charge();
     this.setState({
-      isShowPayment: !this.state.isShowPayment
+      isShowPayment: true
     })
   }
 
@@ -94,7 +97,8 @@ export default class PaymentScreen extends React.Component {
             </CardItem>
             <CardItem>
               <Body>
-              <Button primary style={{ alignSelf: 'center' }} onPress={() => {
+              <Button primary style={{ alignSelf: 'center' }} onPress={async () => {
+                await Customer.pay();
                 this.props.navigation.navigate('Receipt')
               }}>
                 <Text>Confirm Pay</Text>
