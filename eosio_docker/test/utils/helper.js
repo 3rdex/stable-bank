@@ -11,8 +11,21 @@ export async function deposits() {
   return rows;
 }
 
+
+export async function deposit_for(user) {
+    const query = { code: 'stablebankac', scope: 'stablebankac', table: 'depostruct' };
+    const { rows } = await rpc.get_table_rows(query);
+    return rows;
+}
+
 export async function payment({ user }) {
   const query = { code: 'stablebankac', scope: user, table: 'paystruct' };
+  const { rows } = await rpc.get_table_rows(query);
+  return rows;
+}
+
+export async function holds() {
+  const query = { code: 'stablebankac', scope: 'stablebankac', table: 'holdstruct' };
   const { rows } = await rpc.get_table_rows(query);
   return rows;
 }

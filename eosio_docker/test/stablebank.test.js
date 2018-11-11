@@ -1,5 +1,5 @@
 import {initAPI, rpc} from './utils/initAPI';
-import {deposits, prepares, payment} from './utils/helper';
+import {deposits, prepares, payment, holds} from './utils/helper';
 import {deposit, prepare, charge, pay} from './utils/actions';
 
 const CONTRACT = 'stablebankac';
@@ -15,8 +15,7 @@ test('deposit', async () => {
     await customer.transact({
         actions: [deposit(CUSTOMER, CUSTOMER, '10.0000 SYS')]
     }, DEFAULT_TRANS);
-    const [balanceI, balanceU] = await deposits();
-    console.log(balanceU);
+    const depositList = await deposits();
 });
 
 test('shop deposit', async () => {
@@ -32,7 +31,7 @@ test('prepare', async () => {
         actions: [prepare(CUSTOMER)]
     }, DEFAULT_TRANS);
     const [prepare_record] = await prepares();
-    console.log(prepare_record);
+    expect(prepare_record.user).toBe(CUSTOMER);
 });
 
 test('charge', async () => {
@@ -41,8 +40,11 @@ test('charge', async () => {
             CUSTOMER, SHOPUSER, '1.0000 SYS'
         )]
     }, DEFAULT_TRANS);
-    const [payment_record] = await payment({user: CUSTOMER});
-    console.log(payment_record);
+
+    const paymentList = await payment({user: CUSTOMER});
+    expect(paymentList.length).toBe(1);
+    const [payment_record] = paymentList;
+    expect(payment_record.amount).toBe('1.0000 SYS');
 });
 
 test('pay', async () => {
@@ -54,7 +56,10 @@ test('pay', async () => {
             CUSTOMER, SHOPUSER, '10.0000 SYS'
         )]
     }, DEFAULT_TRANS);
-    const [payment_record] = await payment({user: CUSTOMER});
+    const paymentList = await payment({user: CUSTOMER});
+    expect(paymentList.length).toBe(0);
+    const [holds] = await holds({user: CUSTOMER});
+    expect(holds.amount).toBe('0.1000 SYS');
     const [i, balance] = await deposits();
     console.log(balance);
 }, 15000);
