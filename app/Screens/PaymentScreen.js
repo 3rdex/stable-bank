@@ -52,7 +52,7 @@ export default class PaymentScreen extends React.Component {
                   <Image style={{ width: 200, height: 200, marginBottom: 20 }}
                          source={require('../assets/payments/qr-code.jpg')}/>
                 </TouchableOpacity>
-                <Text>Auto update in every minute</Text>
+                <Text>Auto update every minute</Text>
               </View>
             </CardItem>
           </Card>
