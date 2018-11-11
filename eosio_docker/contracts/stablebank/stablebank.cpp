@@ -28,6 +28,19 @@ CONTRACT stablebank : public eosio::contract {
       uint64_t index_by_user() const { return user.value; }
     };
 
+    TABLE holdstruct {
+      uint64_t prim_key;  // primary key
+      name user;          // account name for the user
+      asset amount;       // deposit
+      uint64_t timestamp; // the store the last update block time
+
+      // primary key
+      auto primary_key() const { return prim_key; }
+      // secondary key
+      uint64_t index_by_user() const { return user.value; }
+      uint64_t index_by_time() const { return timestamp; }
+    };
+
     TABLE paystruct {
       uint64_t prim_key;  // primary key
       name from;          // account name for the user
@@ -52,6 +65,14 @@ CONTRACT stablebank : public eosio::contract {
         deposit_table;
 
     typedef eosio::multi_index<
+        name("holdstruct"), holdstruct,
+        indexed_by<name("byuser"), const_mem_fun<holdstruct, uint64_t,
+                                                 &holdstruct::index_by_user>>,
+        indexed_by<name("bytime"), const_mem_fun<holdstruct, uint64_t,
+                                                 &holdstruct::index_by_time>>>
+        hold_table;
+
+    typedef eosio::multi_index<
         name("prepaystruct"), prepaystruct,
         indexed_by<name("byuser"), const_mem_fun<prepaystruct, uint64_t,
                                                  &prepaystruct::index_by_user>>>
@@ -71,6 +92,7 @@ CONTRACT stablebank : public eosio::contract {
 
     deposit_table _deposits;
     prepare_pay_table _prepare_pay;
+    hold_table _holds;
 
   public:
     using contract::contract;
@@ -78,7 +100,8 @@ CONTRACT stablebank : public eosio::contract {
     // constructor
     stablebank(name receiver, name code, datastream<const char *> ds)
         : contract(receiver, code, ds), _deposits(receiver, receiver.value),
-          _prepare_pay(receiver, receiver.value) {}
+          _prepare_pay(receiver, receiver.value),
+          _holds(receiver, receiver.value) {}
 
     ACTION preparepay(name from){
       require_auth(from);
@@ -118,7 +141,7 @@ CONTRACT stablebank : public eosio::contract {
       });
     }
     
-    ACTION pay(name from, name shop, asset amount){
+    ACTION pay(name from, name shop){
       require_auth(from);
       auto prepare_index = _prepare_pay.get_index<name("byuser")>();
       auto prepare_itr = prepare_index.find(from.value);
@@ -151,8 +174,14 @@ CONTRACT stablebank : public eosio::contract {
         item.timestamp = now();
       });
     }
-    void hold_balance(name shop, asset amount) {
 
+    void hold_balance(name shop, asset amount) {
+      _holds.emplace(_self, [&](auto &item) {
+        item.prim_key = _holds.available_primary_key();
+        item.user = shop;
+        item.amount = amount;
+        item.timestamp = now();
+      });
     }
 
     struct transfer_struct {
