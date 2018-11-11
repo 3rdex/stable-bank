@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Image,TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 import {
   Container,
   Content,
@@ -17,6 +17,7 @@ import {
 import { BlurView } from 'expo';
 import {Shop} from "../Services/Shop";
 import {Customer} from "../Services/Customer";
+import Spinner from 'react-native-loading-spinner-overlay';
 
 export default class PaymentScreen extends React.Component {
   static navigationOptions = {
@@ -36,6 +37,18 @@ export default class PaymentScreen extends React.Component {
       isShowPayment: true
     })
   }
+
+  async confirmPay() {
+    this.setState({
+      spinning: true
+    });
+    await Customer.pay();
+    this.props.navigation.navigate('Receipt');
+    this.setState({
+      spinning: true
+    });
+  }
+
 
   render() {
     return (
@@ -97,16 +110,18 @@ export default class PaymentScreen extends React.Component {
             </CardItem>
             <CardItem>
               <Body>
-              <Button primary style={{ alignSelf: 'center' }} onPress={async () => {
-                await Customer.pay();
-                this.props.navigation.navigate('Receipt')
-              }}>
+              <Button primary style={{ alignSelf: 'center' }} onPress={this.confirmPay.bind(this)}>
                 <Text>Confirm Pay</Text>
               </Button>
               </Body>
             </CardItem>
           </View>
         </BlurView>}
+        <Spinner
+          visible={this.state.spinner}
+          textContent={'Loading...'}
+          textStyle={{ color: '#FFF' }}
+        />
       </Container>
     );
   }
