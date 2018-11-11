@@ -30,8 +30,26 @@ docker stop eosio_notechain_container || true && docker rm --force eosio_notecha
 rm -rf "./eosio_docker/data"
 mkdir -p "./eosio_docker/data"
 
-# set up node_modules for frontend
-echo "=== npm install packpage for frontend react app ==="
-# change directory to ./frontend
-cd "./frontend"
-npm install
+# change to script's directory
+cd "$(dirname "$0")/eosio_docker"
+
+if [ -e "data/initialized" ]
+then
+    script="./scripts/continue_blockchain.sh"
+else
+    script="./scripts/init_blockchain.sh"
+fi
+
+echo "=== run docker container from the eosio/eos-dev image ==="
+docker run --rm --name eosio_notechain_container -d \
+-p 8888:8888 -p 9876:9876 \
+--mount type=bind,src="$(pwd)"/contracts,dst=/opt/eosio/bin/contracts \
+--mount type=bind,src="$(pwd)"/scripts,dst=/opt/eosio/bin/scripts \
+--mount type=bind,src="$(pwd)"/data,dst=/mnt/dev/data \
+-w "/opt/eosio/bin/" eosio/eos-dev:v1.4.2 /bin/bash -c "$script"
+
+if [ "$1" != "--nolog" ]
+then
+    echo "=== follow eosio_notechain_container logs ==="
+    docker logs eosio_notechain_container --follow
+fi
