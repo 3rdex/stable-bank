@@ -1,0 +1,10 @@
+data/*
+.idea
+.vscode
+node_modules
+CMakeFiles
+*.cmake
+*.abi
+*.wasm
+Makefile
+CMakeCache.txt
