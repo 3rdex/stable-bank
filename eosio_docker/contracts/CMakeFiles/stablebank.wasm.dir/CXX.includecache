@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/gcwei/Workspace/opensource/eos/eos-sf-hackathon/stable-bank/eosio_docker/contracts/stablebank/stablebank.cpp
+eosiolib/eosio.hpp
+-
+eosiolib/asset.hpp
+-
+

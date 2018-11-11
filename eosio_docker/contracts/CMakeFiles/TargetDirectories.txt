@@ -1,0 +1,4 @@
+/Users/gcwei/Workspace/opensource/eos/eos-sf-hackathon/stable-bank/eosio_docker/contracts/CMakeFiles/rebuild_cache.dir
+/Users/gcwei/Workspace/opensource/eos/eos-sf-hackathon/stable-bank/eosio_docker/contracts/CMakeFiles/edit_cache.dir
+/Users/gcwei/Workspace/opensource/eos/eos-sf-hackathon/stable-bank/eosio_docker/contracts/CMakeFiles/deploy.dir
+/Users/gcwei/Workspace/opensource/eos/eos-sf-hackathon/stable-bank/eosio_docker/contracts/CMakeFiles/stablebank.wasm.dir
