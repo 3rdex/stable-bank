@@ -26,12 +26,17 @@ export default class PaymentScreen extends React.Component {
         <Content padder contentContainerStyle={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Card style={{ borderRadius: 4, width: '90%' }}>
             <CardItem style={{}}>
-              <Text>This is Payment Card</Text>
-            </CardItem>
-            <CardItem>
-              <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
-                <Image style={{ width: 200, height: 200 }}
+              <View style={{ flex: 1, alignItems: 'center' }}>
+                <Image style={{ width: '100%', height: 60 }}
                        source={require('../assets/payments/bar-code.png')}/>
+                <Text>1231 8947 9383 9821</Text>
+              </View>
+            </CardItem>
+            <CardItem style={{ backgroundColor: '#f0f0f2' }}>
+              <View style={{ flex: 1, alignItems: 'center' }}>
+                <Image style={{ width: 200, height: 200, marginBottom:20 }}
+                       source={require('../assets/payments/qr-code.jpg')}/>
+                <Text>Auto update in every minute</Text>
               </View>
             </CardItem>
           </Card>
