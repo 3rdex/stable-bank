@@ -64,16 +64,16 @@ export default class PaymentScreen extends React.Component {
                   <Text style={{ alignSelf: 'center', fontSize: 24 }}>$37.99</Text>
                 </View>
                 <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Text style={{}}>asdasd</Text>
-                  <Text>asdasdsa</Text>
+                  <Text style={{}}>Amount</Text>
+                  <Text>$40.99</Text>
                 </View>
                 <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Text style={{}}>asdasd</Text>
-                  <Text>asdasdsa</Text>
+                  <Text style={{}}>Promotion</Text>
+                  <Text>-$3.99</Text>
                 </View>
                 <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Text style={{}}>asdasd</Text>
-                  <Text>asdasdsa</Text>
+                  <Text style={{}}>Total</Text>
+                  <Text>$37.99</Text>
                 </View>
               </View>
             </CardItem>
