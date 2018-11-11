@@ -1,5 +1,4 @@
-import { Api, JsonRpc, RpcError, JsSignatureProvider, SerialBuffer } from 'eosjs-rn';
-import { TextDecoder, TextEncoder } from 'text-encoding';
+import { Api, JsonRpc, RpcError, JsSignatureProvider, SerialBuffer } from 'eosjs';
 
 export const rpc = new JsonRpc('http://127.0.0.1:8888', { fetch });
 
