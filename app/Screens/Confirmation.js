@@ -24,9 +24,14 @@ export default class ReceiptScreen extends React.Component {
   render() {
     return (
       <Container style={{}}>
-        <View>
-
-        </View>
+        <Content padder contentContainerStyle={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <View style={{ alignSelf: 'center', alignItems: 'center', justifyContent: 'center' }}>
+            <Image style={{ height: 80, width: 80 }} source={require('../assets/logo/iTunesArtwork.png')}></Image>
+            <Text style={{ color: '#0a88ff', fontSize: 24, }}>Payment Success!</Text>
+            <Text style={{ fontSize: 28, marginTop: 20, }}>$37.99</Text>
+            <Text style={{ fontSize: 16, marginTop: 20, textDecorationLine: 'line-through' }}>$40.99</Text>
+          </View>
+        </Content>
       </Container>
     );
   }
