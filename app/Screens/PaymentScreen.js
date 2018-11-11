@@ -14,6 +14,7 @@ import {
   Thumbnail,
   Icon,
 } from 'native-base';
+import { BlurView } from 'expo';
 
 export default class PaymentScreen extends React.Component {
   static navigationOptions = {
@@ -34,13 +35,57 @@ export default class PaymentScreen extends React.Component {
             </CardItem>
             <CardItem style={{ backgroundColor: '#f0f0f2' }}>
               <View style={{ flex: 1, alignItems: 'center' }}>
-                <Image style={{ width: 200, height: 200, marginBottom:20 }}
+                <Image style={{ width: 200, height: 200, marginBottom: 20 }}
                        source={require('../assets/payments/qr-code.jpg')}/>
                 <Text>Auto update in every minute</Text>
               </View>
             </CardItem>
           </Card>
         </Content>
+        <BlurView tint="dark" intensity={80}
+                  style={{
+                    flex: 1,
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    justifyContent: 'flex-end',
+                  }}>
+          <View style={{ height: 300, backgroundColor: '#fdfdfd', borderTopLeftRadius: 12, borderTopRightRadius: 12, }}>
+            <CardItem bordered>
+              <Body>
+              <Text>Confirm Payment</Text>
+              </Body>
+            </CardItem>
+            <CardItem style={{}}>
+              <View style={{ height: 150, flex: 1 }}>
+                <View style={{ flex: 1 }}>
+                  <Text style={{ alignSelf: 'center', fontSize: 24 }}>$37.99</Text>
+                </View>
+                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <Text style={{}}>asdasd</Text>
+                  <Text>asdasdsa</Text>
+                </View>
+                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <Text style={{}}>asdasd</Text>
+                  <Text>asdasdsa</Text>
+                </View>
+                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <Text style={{}}>asdasd</Text>
+                  <Text>asdasdsa</Text>
+                </View>
+              </View>
+            </CardItem>
+            <CardItem>
+              <Body>
+              <Button primary style={{ alignSelf: 'center' }}>
+                <Text>Confirm Pay</Text>
+              </Button>
+              </Body>
+            </CardItem>
+          </View>
+        </BlurView>
       </Container>
     );
   }
