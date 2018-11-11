@@ -56,19 +56,21 @@ deploy_contract.sh stablebank stablebankac stablebankwa $(cat stablebank_wallet_
 cleos set account permission stablebankac active '{"threshold": 1,"keys": [{"key": "EOS6PUh9rs7eddJNzqgqDx1QrspSHLRxLMcRdwHZZRL4tpbtvia5B","weight": 1}],"accounts": [{"permission":{"actor":"stablebankac","permission":"eosio.code"},"weight":1}]}' owner -p stablebankac
 
 CONTRACT_PATH=/opt/eosio/contracts
-cleos create account eosio eosio.token EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV
-cleos set contract eosio.token ${CONTRACT_PATH}/eosio.token -p eosio.token@active
+cleos create account eosio stablecoinac EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV
+cleos set contract stablecoinac ${CONTRACT_PATH}/eosio.token -p stablecoinac@active
 
 echo "=== create user accounts ==="
 # script for create data into blockchain
 create_accounts.sh
 
 # * Replace the script with different form of data that you would pushed into the blockchain when you start your own project
-cleos push action eosio.token create '[ "eosio", "1000000000.0000 SYS"]' -p eosio.token@active
-cleos push action eosio.token issue '[ "eventchainac", "1000.0000 SYS", "init" ]' -p eosio@active
-cleos push action eosio.token issue '[ "useraaaaaaaa", "1000.0000 SYS", "init" ]' -p eosio@active
-cleos push action eosio.token issue '[ "useraaaaaaab", "1000.0000 SYS", "init" ]' -p eosio@active
-cleos push action eosio.token issue '[ "useraaaaaaac", "1000.0000 SYS", "init" ]' -p eosio@active
+cleos push action stablecoinac create '[ "stablecoinac", "1000000000.0000 STB"]' -p stablecoinac@active
+cleos push action stablecoinac issue '[ "stablecoinac", "10000.0000 STB", "init" ]' -p stablecoinac@active
+cleos push action stablecoinac issue '[ "useraaaaaaaa", "1000.0000 STB", "init" ]' -p stablecoinac@active
+cleos push action stablecoinac issue '[ "useraaaaaaab", "1000.0000 STB", "init" ]' -p stablecoinac@active
+
+cleos push action stablecoinac transfer '[ "stablecoinac", "stablebankac", "1000.0000 STB", "useraaaaaaaa" ]' -p stablecoinac@active
+cleos push action stablecoinac transfer '[ "stablecoinac", "stablebankac", "1000.0000 STB", "useraaaaaaab" ]' -p stablecoinac@active
 
 echo "=== end of setup blockchain accounts and smart contract ==="
 # create a file to indicate the blockchain has been initialized

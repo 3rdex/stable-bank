@@ -1,13 +1,17 @@
 import { createStackNavigator } from 'react-navigation';
 import HomeScreen from '../Screens/HomeScreen';
-import DetailScreen from '../Screens/DetailScreen';
+import PaymentScreen from '../Screens/PaymentScreen';
+import ReceiptScreen from '../Screens/Confirmation';
 
 export const RootStack = createStackNavigator({
   Home: {
     screen: HomeScreen,
   },
-  Detail: {
-    screen: DetailScreen,
+  Payment: {
+    screen: PaymentScreen,
+  },
+  Receipt: {
+    screen: ReceiptScreen,
   },
 }, {
   initialRouteName: 'Home',
