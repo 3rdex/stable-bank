@@ -80,7 +80,7 @@ export default class HomeScreen extends React.Component {
       },
     ];
     return (
-      <View style={{ height: 600 }}>
+      <View style={{ height: 500, position: 'relative' }}>
         <DeckSwiper
           ref={(c) => this._deckSwiper = c}
           dataSource={cards}
@@ -109,6 +109,25 @@ export default class HomeScreen extends React.Component {
             </Card>
           }
         />
+        <View style={{
+          flexDirection: "row",
+          flex: 1,
+          position: "absolute",
+          top: 430,
+          left: 0,
+          right: 0,
+          justifyContent: 'space-between',
+          padding: 15
+        }}>
+          <Button iconLeft onPress={() => this._deckSwiper._root.swipeLeft()}>
+            {/*<Icon name="arrow-back"/>*/}
+            <Text>Swipe Left</Text>
+          </Button>
+          <Button iconRight onPress={() => this._deckSwiper._root.swipeRight()}>
+            {/*<Icon name="arrow-forward"/>*/}
+            <Text>Swipe Right</Text>
+          </Button>
+        </View>
       </View>
     )
   }
