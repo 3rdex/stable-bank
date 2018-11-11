@@ -54,18 +54,21 @@ export default class HomeScreen extends React.Component {
     const cards = [
       {
         text: 'Hilton',
+        category: 'hotel',
         name: 'One',
         logo: require('../assets/merchandise/logo/hilton.png'),
         feature: require('../assets/merchandise/feature/hilton.jpg'),
       },
       {
         text: 'Sea World',
+        category: 'tour',
         name: 'Two',
         logo: require('../assets/merchandise/logo/sea-world.png'),
         feature: require('../assets/merchandise/feature/sea-world.jpg'),
       },
       {
         text: '711',
+        category: 'store',
         name: 'Three',
         logo: require('../assets/merchandise/logo/seven-eleven.png'),
         feature: require('../assets/merchandise/feature/seven-eleven.jpg'),
@@ -87,16 +90,12 @@ export default class HomeScreen extends React.Component {
                   <Thumbnail source={item.logo}/>
                   <Body>
                   <Text>{item.text}</Text>
-                  <Text note>NativeBase</Text>
+                  <Text note>{item.category}</Text>
                   </Body>
                 </Left>
               </CardItem>
               <CardItem cardBody>
                 <Image style={{ height: 300, flex: 1 }} source={item.feature}/>
-              </CardItem>
-              <CardItem>
-                {/*<Icon name="heart" style={{ color: '#ED4A6A' }}/>*/}
-                <Text>{item.name}</Text>
               </CardItem>
             </Card>
           }
