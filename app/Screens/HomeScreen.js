@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import {
   Container,
   Content,
@@ -12,7 +12,7 @@ import {
   Right,
   DeckSwiper,
   Thumbnail,
-  Icon
+  Icon,
 } from 'native-base';
 
 export default class HomeScreen extends React.Component {
@@ -61,15 +61,23 @@ export default class HomeScreen extends React.Component {
   renderMerchandise() {
     const cards = [
       {
-        text: 'Card One',
+        text: 'Hilton',
         name: 'One',
-        // image: require('./img/swiper-1.png'),
+        logo: require('../assets/merchandise/logo/hilton.png'),
+        feature: require('../assets/merchandise/feature/hilton.jpg'),
       },
       {
-        text: 'Card Two',
+        text: 'Sea World',
         name: 'Two',
-        // image: require('./img/swiper-1.png'),
-      }
+        logo: require('../assets/merchandise/logo/sea-world.png'),
+        feature: require('../assets/merchandise/feature/sea-world.jpg'),
+      },
+      {
+        text: '711',
+        name: 'Three',
+        logo: require('../assets/merchandise/logo/seven-eleven.png'),
+        feature: require('../assets/merchandise/feature/seven-eleven.jpg'),
+      },
     ];
     return (
       <View>
@@ -84,18 +92,18 @@ export default class HomeScreen extends React.Component {
             <Card style={{ elevation: 3 }}>
               <CardItem>
                 <Left>
-                  {/*<Thumbnail source={item.image}/>*/}
+                  <Thumbnail source={item.logo}/>
                   <Body>
                   <Text>{item.text}</Text>
                   <Text note>NativeBase</Text>
                   </Body>
                 </Left>
               </CardItem>
-              {/*<CardItem cardBody>*/}
-              {/*<Image style={{ height: 300, flex: 1 }} source={item.image}/>*/}
-              {/*</CardItem>*/}
+              <CardItem cardBody>
+                <Image style={{ height: 300, flex: 1 }} source={item.feature}/>
+              </CardItem>
               <CardItem>
-                <Icon name="heart" style={{ color: '#ED4A6A' }}/>
+                {/*<Icon name="heart" style={{ color: '#ED4A6A' }}/>*/}
                 <Text>{item.name}</Text>
               </CardItem>
             </Card>
