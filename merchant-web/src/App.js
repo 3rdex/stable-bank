@@ -97,8 +97,8 @@ class App extends Component {
     const balance = await Shop.getBalance();
     const pending = await Shop.getPending();
     this.setState({
-      availableBalance: BALANCE_FIX + balance,
-      pendingBalance: PENDING_FIX + pending,
+      availableBalance: (BALANCE_FIX + balance).toFixed(2),
+      pendingBalance: (PENDING_FIX + pending).toFixed(2),
     });
 
   }
