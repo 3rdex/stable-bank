@@ -28,33 +28,27 @@ export default class HomeScreen extends React.Component {
         </CardItem>
         <CardItem>
           <Body>
-          <View style={{ height: 100, alignItems:'center', justifyContent:'center'}}>
+          <View style={{ height: 100, alignItems: 'center', justifyContent: 'center' }}>
             <Text style={{ fontSize: 36, fontWeight: 'bold' }}>
               Balance: $35000
             </Text>
           </View>
           </Body>
         </CardItem>
+        <CardItem>
+          <View style={{ flex: 1, flexDirection: "row", justifyContent: 'space-between', }}>
+            <Button success onPress={() => {
+              this.props.navigation.navigate('Detail')
+            }}><Text> Send </Text></Button>
+            <Button warning onPress={() => {
+              this.props.navigation.navigate('Detail')
+            }}><Text> Receive </Text></Button>
+          </View>
+        </CardItem>
       </Card>
     )
   }
 
-  renderActions() {
-    return (<Card>
-      <CardItem>
-        <Left>
-          <Button primary onPress={() => {
-            this.props.navigation.navigate('Detail')
-          }}><Text> Send </Text></Button>
-        </Left>
-        <Right>
-          <Button primary onPress={() => {
-            this.props.navigation.navigate('Detail')
-          }}><Text> Receive </Text></Button>
-        </Right>
-      </CardItem>
-    </Card>)
-  }
 
   renderMerchandise() {
     const cards = [
@@ -135,7 +129,6 @@ export default class HomeScreen extends React.Component {
       <Container>
         <Content padder>
           {this.renderAccount()}
-          {this.renderActions()}
           {this.renderMerchandise()}
         </Content>
       </Container>
