@@ -80,7 +80,7 @@ export default class HomeScreen extends React.Component {
       },
     ];
     return (
-      <View>
+      <View style={{ height: 600 }}>
         <DeckSwiper
           ref={(c) => this._deckSwiper = c}
           dataSource={cards}
