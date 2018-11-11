@@ -1,9 +1,14 @@
-import React from "react";
-import { createStackNavigator } from "react-navigation";
-import HomeScreen from "../screens/HomeScreen";
+import { createStackNavigator } from 'react-navigation';
+import HomeScreen from '../Screens/HomeScreen';
+import DetailScreen from '../Screens/DetailScreen';
 
-const RootStack = createStackNavigator({
-  Home: HomeScreen,
+export const RootStack =  createStackNavigator({
+  Home: {
+    screen: HomeScreen,
+  },
+  Detail: {
+    screen: DetailScreen,
+  },
+}, {
+  initialRouteName: 'Home',
 });
-
-export default RootStack;
