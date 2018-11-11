@@ -1,6 +1,6 @@
 import {rpc} from './initAPI';
 
-const CONTRACT = CONTRACT;
+const CONTRACT = 'stablebankac';
 
 export async function prepares() {
     const query = {code: CONTRACT, scope: CONTRACT, table: 'prepaystruct'};
