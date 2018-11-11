@@ -1,8 +1,7 @@
-import {initAPI, rpc} from './utils/initAPI';
-import {deposits, prepares, payment, holds} from './utils/helper';
+import {initAPI} from './utils/initAPI';
+import {prepares, payment, holds, deposit_for} from './utils/helper';
 import {deposit, prepare, charge, pay} from './utils/actions';
 
-const CONTRACT = 'stablebankac';
 const CUSTOMER = 'useraaaaaaaa';
 const SHOPUSER = 'useraaaaaaab';
 
@@ -12,18 +11,23 @@ const shop = initAPI('5KLqT1UFxVnKRWkjvhFur4sECrPhciuUqsYRihc1p9rxhXQMZBg');
 const DEFAULT_TRANS = {blocksBehind: 3, expireSeconds: 30};
 
 test('deposit', async () => {
+    const balanceBefore = await deposit_for({user: CUSTOMER});
     await customer.transact({
         actions: [deposit(CUSTOMER, CUSTOMER, '10.0000 SYS')]
     }, DEFAULT_TRANS);
-    const depositList = await deposits();
+    const balance = await deposit_for({user: CUSTOMER});
+    const diff = balance - balanceBefore;
+    expect(diff).toBeCloseTo(10);
 });
 
 test('shop deposit', async () => {
+    const balanceBefore = await deposit_for({user: SHOPUSER});
     await shop.transact({
         actions: [deposit(SHOPUSER, SHOPUSER, '10.0000 SYS')]
     }, DEFAULT_TRANS);
-    const [balanceI, balanceU, balanceS] = await deposits();
-    console.log(balanceU, balanceS);
+    const balance = await deposit_for({user: SHOPUSER});
+    const diff = balance - balanceBefore;
+    expect(diff).toBeCloseTo(10);
 });
 
 test('prepare', async () => {
@@ -48,18 +52,23 @@ test('charge', async () => {
 });
 
 test('pay', async () => {
-    const [ib, balanceBefore] = await deposits();
-    console.log(balanceBefore);
-    console.log('===============');
+    const shopBalanceBefore = await deposit_for({user: SHOPUSER});
+    const customerBalanceBefore = await deposit_for({user: CUSTOMER});
     await customer.transact({
         actions: [pay(
-            CUSTOMER, SHOPUSER, '10.0000 SYS'
+            CUSTOMER, SHOPUSER
         )]
     }, DEFAULT_TRANS);
+
     const paymentList = await payment({user: CUSTOMER});
     expect(paymentList.length).toBe(0);
-    const [holds] = await holds({user: CUSTOMER});
-    expect(holds.amount).toBe('0.1000 SYS');
-    const [i, balance] = await deposits();
-    console.log(balance);
+    const hold_list = await holds({user: CUSTOMER});
+    const hold_record = hold_list.reverse()[0];
+    expect(hold_record.amount).toBe('0.0990 SYS');
+
+    const shopBalance = await deposit_for({user: SHOPUSER});
+    const customerBalance = await deposit_for({user: CUSTOMER});
+    expect(shopBalance - shopBalanceBefore).toBeCloseTo(0.9);
+    expect(customerBalanceBefore - customerBalance).toBeCloseTo(1);
+
 }, 15000);

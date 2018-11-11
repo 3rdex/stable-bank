@@ -114,8 +114,8 @@ CONTRACT stablebank : public eosio::contract {
           item.timestamp = now();
         });
       } else {
-        index.modify(itr, _self, [&](auto &item) { 
-          item.timestamp = now(); 
+        index.modify(itr, _self, [&](auto &item) {
+          item.timestamp = now();
         });
       }
     }
@@ -140,7 +140,7 @@ CONTRACT stablebank : public eosio::contract {
         item.timestamp = now();
       });
     }
-    
+
     ACTION pay(name from, name shop){
       require_auth(from);
       auto prepare_index = _prepare_pay.get_index<name("byuser")>();
@@ -150,8 +150,8 @@ CONTRACT stablebank : public eosio::contract {
       auto index = pays.get_index<name("byprepare")>();
       auto itr = index.find(prepare_itr->timestamp);
       eosio_assert(itr != index.end(), "no matching charge");
-      auto direct_amount = itr->amount * 0.9;
-      auto hold_amount = itr->amount * 0.099;
+      auto direct_amount = itr->amount * 9 / 10;
+      auto hold_amount = itr->amount * 99 / 1000;
       deduct_balance(from, itr->amount);
       add_balance(shop, direct_amount);
       hold_balance(shop, hold_amount);
