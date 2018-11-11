@@ -24,17 +24,15 @@ export default class HomeScreen extends React.Component {
     return (
       <Card>
         <CardItem header bordered>
-          <Text>$35,000</Text>
+          <Text>My Account</Text>
         </CardItem>
         <CardItem>
           <Body>
-          <Text>
-            NativeBase is a free and open source framework that enable
-            developers to build
-            high-quality mobile apps using React Native iOS and Android
-            apps
-            with a fusion of ES6.
-          </Text>
+          <View style={{ height: 100, alignItems:'center', justifyContent:'center'}}>
+            <Text style={{ fontSize: 36, fontWeight: 'bold' }}>
+              Balance: $35000
+            </Text>
+          </View>
           </Body>
         </CardItem>
       </Card>
