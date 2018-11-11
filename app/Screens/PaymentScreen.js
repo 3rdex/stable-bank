@@ -79,7 +79,9 @@ export default class PaymentScreen extends React.Component {
             </CardItem>
             <CardItem>
               <Body>
-              <Button primary style={{ alignSelf: 'center' }}>
+              <Button primary style={{ alignSelf: 'center' }} onPress={() => {
+                this.props.navigation.navigate('Receipt')
+              }}>
                 <Text>Confirm Pay</Text>
               </Button>
               </Body>
