@@ -5,21 +5,24 @@ import {
   Content,
   Button,
   Text,
-  Card,
-  CardItem,
-  Body,
-  Left,
-  Right,
-  DeckSwiper,
-  Thumbnail,
-  Icon,
 } from 'native-base';
-import { BlurView } from 'expo';
+import { NavigationActions, StackActions } from 'react-navigation';
 
 export default class ReceiptScreen extends React.Component {
-  static navigationOptions = {
+  static navigationOptions = ({ navigation }) => ({
     title: 'Receipt',
-  };
+    headerLeft: null,
+    headerStyle: {
+    },
+    headerRight: (<Button info style={{ height: 36, marginRight:8 }} onPress={() => navigation.dispatch(StackActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: 'Home' })
+      ],
+    }))}>
+      <Text>Done</Text>
+    </Button>)
+  });
 
   render() {
     return (
