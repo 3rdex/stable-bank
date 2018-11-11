@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View, Image,TouchableOpacity } from 'react-native';
 import {
   Container,
   Content,
@@ -21,6 +21,19 @@ export default class PaymentScreen extends React.Component {
     title: 'Pay',
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      isShowPayment: false
+    }
+  }
+
+  toggleIsShowPayment() {
+    this.setState({
+      isShowPayment: !this.state.isShowPayment
+    })
+  }
+
   render() {
     return (
       <Container style={{ backgroundColor: '#1180bb' }}>
@@ -35,23 +48,25 @@ export default class PaymentScreen extends React.Component {
             </CardItem>
             <CardItem style={{ backgroundColor: '#f0f0f2' }}>
               <View style={{ flex: 1, alignItems: 'center' }}>
-                <Image style={{ width: 200, height: 200, marginBottom: 20 }}
-                       source={require('../assets/payments/qr-code.jpg')}/>
+                <TouchableOpacity onPress={this.toggleIsShowPayment.bind(this)}>
+                  <Image style={{ width: 200, height: 200, marginBottom: 20 }}
+                         source={require('../assets/payments/qr-code.jpg')}/>
+                </TouchableOpacity>
                 <Text>Auto update in every minute</Text>
               </View>
             </CardItem>
           </Card>
         </Content>
-        <BlurView tint="dark" intensity={40}
-                  style={{
-                    flex: 1,
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    justifyContent: 'flex-end',
-                  }}>
+        {this.state.isShowPayment && <BlurView tint="dark" intensity={40}
+                                               style={{
+                                                 flex: 1,
+                                                 position: 'absolute',
+                                                 top: 0,
+                                                 left: 0,
+                                                 right: 0,
+                                                 bottom: 0,
+                                                 justifyContent: 'flex-end',
+                                               }}>
           <View style={{ height: 300, backgroundColor: '#fdfdfd', borderTopLeftRadius: 12, borderTopRightRadius: 12, }}>
             <CardItem bordered>
               <Body>
@@ -87,7 +102,7 @@ export default class PaymentScreen extends React.Component {
               </Body>
             </CardItem>
           </View>
-        </BlurView>
+        </BlurView>}
       </Container>
     );
   }
