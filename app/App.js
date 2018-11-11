@@ -5,7 +5,7 @@ import { RootStack } from './Navigation/rootStack';
 export default class App extends React.Component {
   render() {
     return (
-      <RootStack />
+      <RootStack/>
     );
   }
 }
