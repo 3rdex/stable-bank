@@ -27,7 +27,7 @@ export default class HomeScreen extends React.Component {
   async componentDidMount() {
     const balance = await Customer.getBalance();
     this.setState({
-      balance: `$ ${balance.toFixed(2)}`
+      balance: `$${balance.toFixed(2)}`
     })
   }
 
