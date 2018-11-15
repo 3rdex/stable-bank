@@ -32,19 +32,19 @@ export default class DepositScreen extends React.Component {
 
   render() {
     return (
-      <Container style={{ backgroundColor: '#282e3a' }}>
+      <Container style={{ }}>
         <Content padder contentContainerStyle={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Button block bordered light style={{ marginBottom: 12, height: 80, borderRadius: 12 }}>
-            <Text>Show More</Text>
+          <Button block primary style={{ marginBottom: 24, height: 80, borderRadius: 12 }}>
+            <Text>Bitcoin</Text>
           </Button>
-          <Button block bordered light style={{ marginBottom: 12, height: 80, borderRadius: 12 }}>
-            <Text>Show More</Text>
+          <Button block warning style={{ marginBottom: 24, height: 80, borderRadius: 12 }}>
+            <Text>Ethereum</Text>
           </Button>
-          <Button block bordered light style={{ marginBottom: 12, height: 80, borderRadius: 12 }}>
-            <Text>Show More</Text>
+          <Button block info style={{ marginBottom: 24, height: 80, borderRadius: 12 }}>
+            <Text>EOS</Text>
           </Button>
-          <Button block bordered light style={{ marginBottom: 12, height: 80, borderRadius: 12 }}>
-            <Text>Show More</Text>
+          <Button block success style={{ marginBottom: 12, height: 80, borderRadius: 12 }}>
+            <Text>Bank Account</Text>
           </Button>
         </Content>
       </Container>
