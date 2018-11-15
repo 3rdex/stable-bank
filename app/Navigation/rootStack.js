@@ -22,6 +22,6 @@ export const RootStack = createStackNavigator({
     screen: ReceiptScreen,
   },
 }, {
-  initialRouteName: 'Simulate',
+  initialRouteName: 'Home',
   headerMode: 'float',
 });

@@ -41,63 +41,50 @@ export default class SimulateScanScreen extends React.Component {
   }
 
 
-  renderCode() {
+  renderScanner() {
     return (
-      <Image style={{ width: 200, height: 200, marginBottom: 20 }}
-             source={require('../assets/payments/qr-code.jpg')}/>);
+      <BlurView tint="dark" intensity={50}
+                style={{
+                  flex: 1,
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+        <View style={{ position: 'relative' }}>
+          <Image style={{ width: 160, height: 160, marginTop: 100 }}
+                 source={require('../assets/payments/qr-code.jpg')}/>
+          <Animated.View style={{
+            position: 'absolute', bottom: 0,
+            height: 3, backgroundColor: 'rgba(255, 0, 0, .7)', width: 160,
+            shadowOffset: { width: 10, height: 10, },
+            shadowColor: 'rgba(255, 0, 0, .5)',
+            shadowOpacity: 1.0,
+            transform: [{
+              translateY: this.animation.interpolate({
+                inputRange: [0, 1],
+                outputRange: [-160, 0]
+              })
+            }],
+          }}>
+          </Animated.View>
+        </View>
+        <Text style={{ marginTop: 20, color: 'white' }}>Place the QR Code inside</Text>
+      </BlurView>
+    )
   }
 
   render() {
     return (
-      <Container style={{ backgroundColor: '#1180bb' }}>
-        <Content padder contentContainerStyle={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Card style={{ borderRadius: 4, width: '90%' }}>
-            <CardItem style={{}}>
-              <View style={{ flex: 1, alignItems: 'center' }}>
-                <Image style={{ width: '100%', height: 60, zIndex: 99 }}
-                       source={require('../assets/payments/bar-code.png')}/>
-                <Text>1231 8947 9383 9821</Text>
-              </View>
-            </CardItem>
-            <CardItem style={{ backgroundColor: '#f0f0f2' }}>
-              <View style={{ flex: 1, alignItems: 'center' }}>
-                {this.renderCode()}
-                <Text>Auto update every minute</Text>
-              </View>
-            </CardItem>
-          </Card>
-        </Content>
-        <BlurView tint="dark" intensity={60}
-                  style={{
-                    flex: 1,
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}>
-          <View style={{ position: 'relative' }}>
-            <Image style={{ width: 200, height: 200, marginTop: 60 }}
-                   source={require('../assets/payments/qr-code.jpg')}/>
-            <Animated.View style={{
-              position: 'absolute', bottom: 0,
-              height: 3, backgroundColor: 'rgba(255, 0, 0, .7)', width: 200,
-              shadowOffset: { width: 10, height: 10, },
-              shadowColor: 'rgba(255, 0, 0, .5)',
-              shadowOpacity: 1.0,
-              transform: [{
-                translateY: this.animation.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [-200, 0]
-                })
-              }],
-            }}>
-            </Animated.View>
-          </View>
-          <Text style={{ marginTop: 20, color: 'white' }}>Place the QR Code inside</Text>
-        </BlurView>
+      <Container>
+        <Image style={{
+          width: '100%',
+          height: '100%'
+        }} source={require('../assets/payments/bg.png')}/>
+        {this.renderScanner()}
       </Container>
     );
   }
