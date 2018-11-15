@@ -76,7 +76,10 @@ export default class SimulateScanScreen extends React.Component {
                    source={require('../assets/payments/qr-code.jpg')}/>
             <Animated.View style={{
               position: 'absolute', bottom: 0,
-              height: 3, backgroundColor: 'red', width: 200,
+              height: 3, backgroundColor: 'rgba(255, 0, 0, .7)', width: 200,
+              shadowOffset: { width: 10, height: 10, },
+              shadowColor: 'rgba(255, 0, 0, .5)',
+              shadowOpacity: 1.0,
               transform: [{
                 translateY: this.animation.interpolate({
                   inputRange: [0, 1],
