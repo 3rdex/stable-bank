@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, Easing, StyleSheet, View, Image } from 'react-native';
+import { Animated, Easing, StyleSheet, View, Image, StatusBar } from 'react-native';
 import {
   Container,
   Content,
@@ -11,13 +11,20 @@ import { BlurView } from 'expo';
 
 export default class SimulateScanScreen extends React.Component {
   static navigationOptions = {
-    title: 'Scan',
+    title: 'QR Code Scan',
+    headerStyle: {
+      backgroundColor: '#2f2e31'
+    },
+    headerTitleStyle: {
+      color: 'white'
+    }
   };
 
   animation = new Animated.Value(0);
 
   constructor(props) {
     super(props);
+    StatusBar.setBarStyle('light-content');
   }
 
   componentDidMount() {
