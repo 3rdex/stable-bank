@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 import {
   Container,
   Content,
@@ -14,7 +14,7 @@ import {
   Thumbnail,
   Icon,
 } from 'native-base';
-import {Customer} from "../Services/Customer";
+import { Customer } from "../Services/Customer";
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -24,6 +24,7 @@ export default class HomeScreen extends React.Component {
   state = {
     balance: 'loading'
   };
+
   async componentDidMount() {
     const balance = await Customer.getBalance();
     this.setState({
@@ -35,7 +36,14 @@ export default class HomeScreen extends React.Component {
     return (
       <Card>
         <CardItem header bordered>
-          <Text>My Account</Text>
+          <Left>
+            <Text>My Account</Text>
+          </Left>
+          <Right>
+            <TouchableOpacity>
+              <Text style={{ fontSize: 24 }}>+</Text>
+            </TouchableOpacity>
+          </Right>
         </CardItem>
         <CardItem>
           <Body>

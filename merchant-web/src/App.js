@@ -107,7 +107,7 @@ class App extends Component {
   async refresh() {
     const balance = await Shop.getBalance();
     const pending = await Shop.getPending();
-    rows.unshift(createData('1007', '11/11 13:47', 'Purchase', 'Stable Gump', '$ 9.00', '$ 0.99', true));
+    rows.unshift(createData('1007', '11/11 13:47', 'Purchase', 'Stable Gump', '$ 0.99', '$ 9.00', true));
     this.setState({
       rows,
       availableBalance: BALANCE_FIX + balance,
