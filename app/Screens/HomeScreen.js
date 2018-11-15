@@ -15,6 +15,7 @@ import {
   Icon,
 } from 'native-base';
 import { Customer } from "../Services/Customer";
+import { LinearGradient } from 'expo';
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -31,41 +32,6 @@ export default class HomeScreen extends React.Component {
       balance: `$${balance.toFixed(2)}`
     })
   }
-
-  renderAccount() {
-    return (
-      <Card>
-        <CardItem header bordered>
-          <Left>
-            <Text>My Account</Text>
-          </Left>
-          <Right>
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Deposit')}>
-              <Text style={{ fontSize: 24 }}>+</Text>
-            </TouchableOpacity>
-          </Right>
-        </CardItem>
-        <CardItem>
-          <Body>
-          <View style={{ height: 100, alignItems: 'center', justifyContent: 'center' }}>
-            <Text style={{ fontSize: 36, fontWeight: 'bold' }}>
-              Balance: {this.state.balance}
-            </Text>
-          </View>
-          </Body>
-        </CardItem>
-        <CardItem>
-          <View style={{ flex: 1, flexDirection: "row", justifyContent: 'space-between', }}>
-            <Button success onPress={async () => {
-              this.props.navigation.navigate('Payment')
-            }}><Text> Pay </Text></Button>
-            <Button warning onPress={() => null}><Text> Receive </Text></Button>
-          </View>
-        </CardItem>
-      </Card>
-    )
-  }
-
 
   renderMerchandise() {
     const cards = [
@@ -104,10 +70,13 @@ export default class HomeScreen extends React.Component {
                 <Text note>{item.category}</Text>
                 </Body>
               </Left>
+              <Right>
+                <Image style={{ height: 60, width: 120 }} source={item.feature}/>
+              </Right>
             </CardItem>
-            <CardItem cardBody>
-              <Image style={{ height: 300, flex: 1 }} source={item.feature}/>
-            </CardItem>
+            {/*<CardItem cardBody>*/}
+
+            {/*</CardItem>*/}
           </Card>))
         }
         <Button rounded block bordered info style={{ marginTop: 12 }}><Text>Show More</Text></Button>
@@ -119,7 +88,32 @@ export default class HomeScreen extends React.Component {
     return (
       <Container>
         <Content padder>
-          {this.renderAccount()}
+          <LinearGradient
+            colors={['#52BDDD', '#48C0D9']}
+            style={{ borderRadius: 12 }}
+          >
+            <View style={{ flexDirection: 'row', padding: 20 }}>
+              <Left>
+                <Text style={{ color: 'white' }}>My Account</Text>
+              </Left>
+              <Right>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('Deposit')}>
+                  <Text style={{ fontSize: 24, color: 'white' }}>+</Text>
+                </TouchableOpacity>
+              </Right>
+            </View>
+            <View style={{ padding: 20, height: 100, justifyContent: 'center' }}>
+              <Text style={{ fontSize: 32, fontWeight: 'bold', color: 'white' }}>
+                Balance: {this.state.balance}
+              </Text>
+            </View>
+            <View style={{ padding: 20, flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Button success onPress={async () => {
+                this.props.navigation.navigate('Payment')
+              }}><Text> Pay </Text></Button>
+              <Button warning onPress={() => null}><Text> Receive </Text></Button>
+            </View>
+          </LinearGradient>
           {this.renderMerchandise()}
         </Content>
       </Container>
