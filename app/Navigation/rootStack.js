@@ -18,6 +18,6 @@ export const RootStack = createStackNavigator({
     screen: ReceiptScreen,
   },
 }, {
-  initialRouteName: 'Home',
+  initialRouteName: 'Deposit',
   headerMode: 'float',
 });
