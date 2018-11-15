@@ -21,7 +21,8 @@ export default class DepositScreen extends React.Component {
   render() {
     return (
       <Container style={{}}>
-        <Content padder contentContainerStyle={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Content padder contentContainerStyle={{ flex: 1, justifyContent: 'center'}}>
+          <Text style={{ marginBottom: 20 }}>Available Methods:</Text>
           <Button block primary style={styles.button}>
             <View style={styles.row}>
               <View style={styles.logoWrapper}>
