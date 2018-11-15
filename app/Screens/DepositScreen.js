@@ -1,23 +1,11 @@
 import React from 'react';
-import { ActivityIndicator, StyleSheet, View, Image, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import {
   Container,
   Content,
   Button,
   Text,
-  Card,
-  CardItem,
-  Body,
-  Left,
-  Right,
-  DeckSwiper,
-  Thumbnail,
-  Icon,
 } from 'native-base';
-import { BlurView } from 'expo';
-import { Shop } from "../Services/Shop";
-import { Customer } from "../Services/Customer";
-import Spinner from 'react-native-loading-spinner-overlay';
 
 export default class DepositScreen extends React.Component {
   static navigationOptions = {
@@ -32,19 +20,39 @@ export default class DepositScreen extends React.Component {
 
   render() {
     return (
-      <Container style={{ }}>
+      <Container style={{}}>
         <Content padder contentContainerStyle={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Button block primary style={{ marginBottom: 24, height: 80, borderRadius: 12 }}>
-            <Text>Bitcoin</Text>
+          <Button block primary style={styles.button}>
+            <View style={styles.row}>
+              <View style={styles.logoWrapper}>
+                <Image source={require('../assets/deposit/gusd.png')}/>
+              </View>
+              <Text>GemIni Dollar</Text>
+            </View>
           </Button>
-          <Button block warning style={{ marginBottom: 24, height: 80, borderRadius: 12 }}>
-            <Text>Ethereum</Text>
+          <Button block warning style={styles.button}>
+            <View style={styles.row}>
+              <View style={styles.logoWrapper}>
+                <Image source={require('../assets/deposit/usdc.png')}/>
+              </View>
+              <Text>USD Coin</Text>
+            </View>
           </Button>
-          <Button block info style={{ marginBottom: 24, height: 80, borderRadius: 12 }}>
-            <Text>EOS</Text>
+          <Button block success style={styles.button}>
+            <View style={styles.row}>
+              <View style={styles.logoWrapper}>
+                <Image source={require('../assets/deposit/paxos.png')}/>
+              </View>
+              <Text>Paxos Standard Token</Text>
+            </View>
           </Button>
-          <Button block success style={{ marginBottom: 12, height: 80, borderRadius: 12 }}>
-            <Text>Bank Account</Text>
+          <Button block info style={styles.button}>
+            <View style={styles.row}>
+              <View style={styles.logoWrapper}>
+                <Image style={{ height: 40, width: 40 }} source={require('../assets/deposit/bank.jpg')}/>
+              </View>
+              <Text>Bank Deposit</Text>
+            </View>
           </Button>
         </Content>
       </Container>
@@ -53,10 +61,21 @@ export default class DepositScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  button: {
+    marginBottom: 24, height: 80, borderRadius: 12
   },
+  row: {
+    flex: 1,
+    flexDirection: 'row',
+    padding: 20,
+    alignItems: 'center',
+  },
+  logoWrapper: {
+    width: 48,
+    height: 48,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 12
+  }
 });
