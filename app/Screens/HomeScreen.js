@@ -40,7 +40,7 @@ export default class HomeScreen extends React.Component {
             <Text>My Account</Text>
           </Left>
           <Right>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Deposit')}>
               <Text style={{ fontSize: 24 }}>+</Text>
             </TouchableOpacity>
           </Right>
