@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, StyleSheet, View, Image } from 'react-native';
+import { Animated, Easing, StyleSheet, View, Image } from 'react-native';
 import {
   Container,
   Content,
@@ -13,6 +13,25 @@ export default class SimulateScanScreen extends React.Component {
   static navigationOptions = {
     title: 'Scan',
   };
+
+  animation = new Animated.Value(0);
+
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
+    this.startAnimation();
+  }
+
+  startAnimation() {
+    this.animation.setValue(0);
+    Animated.timing(this.animation, {
+      toValue: 1,
+      duration: 2000,
+      easing: Easing.linear,
+    }).start(() => this.startAnimation());
+  }
 
 
   renderCode() {
@@ -53,13 +72,16 @@ export default class SimulateScanScreen extends React.Component {
                     justifyContent: 'center'
                   }}>
           <View style={{ position: 'relative' }}>
-            <Image style={{ width: 320, height: 320, marginTop: 60 }}
+            <Image style={{ width: 200, height: 200, marginTop: 60 }}
                    source={require('../assets/payments/qr-code.jpg')}/>
             <Animated.View style={{
-              position:'absolute', bottom:0,
-              height: 3, backgroundColor: 'red', width:320,
+              position: 'absolute', bottom: 0,
+              height: 3, backgroundColor: 'red', width: 200,
               transform: [{
-                translateY: -320
+                translateY: this.animation.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [-200, 0]
+                })
               }],
             }}>
             </Animated.View>
