@@ -92,42 +92,25 @@ export default class HomeScreen extends React.Component {
       },
     ];
     return (
-      <View style={{ height: 500, position: 'relative' }}>
-        <DeckSwiper
-          ref={(c) => this._deckSwiper = c}
-          dataSource={cards}
-          renderEmpty={() =>
-            <View style={{ alignSelf: "center" }}>
-              <Text>Over</Text>
-            </View>}
-          renderItem={item =>
-            <Card style={{ elevation: 3 }}>
-              <CardItem>
-                <Left>
-                  <Thumbnail source={item.logo}/>
-                  <Body>
-                  <Text>{item.text}</Text>
-                  <Text note>{item.category}</Text>
-                  </Body>
-                </Left>
-              </CardItem>
-              <CardItem cardBody>
-                <Image style={{ height: 300, flex: 1 }} source={item.feature}/>
-              </CardItem>
-            </Card>
-          }
-        />
-        <View style={{
-          flexDirection: "row",
-          flex: 1,
-          position: "absolute",
-          top: 430,
-          left: 0,
-          right: 0,
-          justifyContent: 'space-between',
-          padding: 15
-        }}>
-        </View>
+      <View>
+        <Text style={{ marginTop: 20, marginBottom: 20, fontSize: 20 }}>Available Merchandise: </Text>
+        {cards.map(item =>
+          (<Card style={{ elevation: 3 }} key={item.text}>
+            <CardItem>
+              <Left>
+                <Thumbnail source={item.logo}/>
+                <Body>
+                <Text>{item.text}</Text>
+                <Text note>{item.category}</Text>
+                </Body>
+              </Left>
+            </CardItem>
+            <CardItem cardBody>
+              <Image style={{ height: 300, flex: 1 }} source={item.feature}/>
+            </CardItem>
+          </Card>))
+        }
+        <Button rounded block bordered info style={{ marginTop: 12 }}><Text>Show More</Text></Button>
       </View>
     )
   }
