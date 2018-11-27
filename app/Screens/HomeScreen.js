@@ -14,23 +14,33 @@ import {
   Thumbnail,
   Icon,
 } from 'native-base';
-import { Customer } from "../Services/Customer";
+import {Customer} from "../Services/Customer";
+import Counter from "react-native-counter";
 import { LinearGradient } from 'expo';
-
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     title: 'Home Screen',
   };
 
   state = {
-    balance: 'loading'
+    balance: 1450.78
   };
 
   async componentDidMount() {
-    const balance = await Customer.getBalance();
-    this.setState({
-      balance: `$${balance.toFixed(2)}`
-    })
+    const balance = 1450.78 + 2850.48;
+    setTimeout(()=> {
+      this.setState({
+        balance: `$${balance.toFixed(2)}`,
+        counter: true
+      })
+    },10000);
+  }
+
+  renderCounter() {
+    if(this.state.counter) return <Counter
+      end={1450.78 + 2850.48} start={1450.78} time={800} digits={2} easing="linear" style={{ fontSize: 36, fontWeight: 'bold', color: 'white'  }}
+    />;
+    return <Text style={{ fontSize: 36, fontWeight: 'bold', color: 'white'  }}>1450.78</Text>
   }
 
   renderMerchandise() {
@@ -102,10 +112,12 @@ export default class HomeScreen extends React.Component {
                 </TouchableOpacity>
               </Right>
             </View>
-            <View style={{ padding: 20, height: 100, justifyContent: 'center' }}>
-              <Text style={{ fontSize: 32, fontWeight: 'bold', color: 'white' }}>
-                Balance: {this.state.balance}
+
+            <View style={{ padding: 20, height: 100, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+              <Text style={{ flex: 1, fontSize: 36, fontWeight: 'bold', color: 'white' }}>
+                Balance:
               </Text>
+              {this.renderCounter()}
             </View>
             <View style={{ padding: 20, flexDirection: 'row', justifyContent: 'space-between' }}>
               <Button success onPress={async () => {
